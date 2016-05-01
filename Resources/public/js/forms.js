@@ -24,20 +24,21 @@ $(document).ready(function () {
     var $this = $(this);
     var url = $this.data('link') + '?query=%QUERY';
     var source = new Bloodhound({
-      datumTokenizer: function(d) { 
-        return Bloodhound.tokenizers.whitespace(d.value); 
+      datumTokenizer: function(datum) {
+        return Bloodhound.tokenizers.whitespace(datum.value);
       },
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       remote: {
         url: url,
-        filter: function(list) {
+        wildcard: '%QUERY',
+        transform: function(list) {
           return $.map(list, function(value) { return { value: value }; });
         }
       }
     });
-    source.initialize();
     $this.typeahead(null,{
-      source: source.ttAdapter()
+      source: source,
+      display: 'value'
     });
     $this.closest('.input-group').children('span.twitter-typeahead').css("display", "table-cell");
   });
@@ -50,15 +51,17 @@ $(document).ready(function () {
         return Bloodhound.tokenizers.whitespace(d.username); 
       },
       queryTokenizer: Bloodhound.tokenizers.whitespace,
-      remote: url
+      remote: {
+        url: url,
+        wildcard: '%QUERY'
+      }
     });
-    source.initialize();
     $this.typeahead(null,{
       displayKey: 'username',
       templates: {
         suggestion: function (d) { return template.render(d); }
       },
-      source: source.ttAdapter()       
+      source: source
     });
     $this.closest('.input-group').children('span.twitter-typeahead').css("display", "table-cell");
   });
@@ -66,6 +69,10 @@ $(document).ready(function () {
     width: 'resolve',
     minimumResultsForSearch: -1
   });
+
+  /**
+   * Initialize typeahead widgets added dynamically by collection API
+   */
   $('body').off('click.collection.data-api', '[data-collection-add-btn]'
     ).on('click.collection.data-api', '[data-collection-add-btn]', function ( e ) {
     var $btn = $(e.target);
@@ -85,14 +92,15 @@ $(document).ready(function () {
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
           url: url,
-          filter: function(list) {
+          wildcard: '%QUERY',
+          transform: function(list) {
             return $.map(list, function(value) { return { value: value }; });
           }
         }
       });
-      source.initialize();
       $this.typeahead(null,{
-        source: source.ttAdapter()       
+        source: source,
+        display: 'value'
       });
       $this.closest('.input-group').children('span.twitter-typeahead').css("display", "table-cell");
     });
@@ -105,15 +113,15 @@ $(document).ready(function () {
           return Bloodhound.tokenizers.whitespace(d.username); 
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: url
+        remote: url,
+        wildcard: '%QUERY'
       });
-      source.initialize();
       $this.typeahead(null,{
         displayKey: 'username',
         templates: {
           suggestion: function (d) { return template.render(d); }
         },
-        source: source.ttAdapter()       
+        source: source
       });
       $this.closest('.input-group').children('span.twitter-typeahead').css("display", "table-cell");
     });
