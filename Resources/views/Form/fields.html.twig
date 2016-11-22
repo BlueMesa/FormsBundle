@@ -27,16 +27,37 @@
     {% endspaceless %}
 {% endblock form_widget_remove_btn %}
 
-{% block file_widget %}
+{% block vich_file_widget %}
     {% spaceless %}
-        {% set type = type|default('file') %}
         <div class="input-group">
             <span class="input-group-btn">
                 <span class="btn btn-default btn-file">
-                    Browse... <input type="{{ type }}" {{ block('widget_attributes') }}/>
+                    Browse... {{ form_widget(form.file) }}
                 </span>
             </span>
-            <p class="form-control"><a href="{{ file_url }}" target="_blank">{{ file_name }}</a></p>
+            <p class="form-control">
+                <span class="upload-selected hidden"></span>
+                <span class="upload-deleted text-danger hidden">
+                {% if download_uri is defined and download_uri %}
+                    File {{ form.file.vars['data'].filename }} will be deleted!
+                    </span>
+                    <a class="upload-current" href="{{ download_uri }}">{{ form.file.vars['data'].filename }}</a>
+                {% else %}
+                    </span>
+                    <a class="upload-current hidden"></a>
+                {% endif %}
+            </p>
+            {% if form.delete is defined %}
+                <span class="input-group-btn" data-toggle="buttons">
+                    <label class="btn btn-file-delete">
+                        <input type="checkbox" autocomplete="off"
+                               id="{{ form.delete.vars['id'] }}"
+                               name="{{ form.delete.vars['full_name'] }}"
+                               value="{{ form.delete.vars['value'] }}">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                    </label>
+                </span>
+            {% endif %}
         </div>
     {% endspaceless %}
-{% endblock file_widget %}
+{% endblock %}

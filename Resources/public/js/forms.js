@@ -56,10 +56,24 @@ $(document).ready(function () {
   });
 
   $(':file').on('fileselect', function(event, numFiles, label) {
-    var status = $(this).parents('.input-group').find('.form-control'),
-        log = numFiles > 1 ? numFiles + ' files selected' : label;
-    if( status.length ) {
-      status.html(log);
+    $(this).parents('.input-group').find('.upload-current').addClass('hidden');
+    $(this).parents('.input-group').find('.upload-deleted').addClass('hidden');
+    $(this).parents('.input-group').find('.btn-file-delete').removeClass('active');
+    $(this).parents('.input-group').find('.btn-file-delete').find(':checkbox').prop('checked', false);
+    $(this).parents('.input-group').find('.upload-selected').html(label).removeClass('hidden');
+  });
+
+  $('.btn-file-delete').find(':checkbox').change(function() {
+    var $this = $(this);
+    if ($this.is(':checked')) {
+      $(this).parents('.input-group').find('.upload-current').addClass('hidden');
+      $(this).parents('.input-group').find('.upload-deleted').removeClass('hidden');
+      $(this).parents('.input-group').find('.upload-selected').addClass('hidden');
+      $(this).parents('.input-group').find(':file').val('');
+    } else {
+      $(this).parents('.input-group').find('.upload-current').removeClass('hidden');
+      $(this).parents('.input-group').find('.upload-deleted').addClass('hidden');
+      $(this).parents('.input-group').find('.upload-selected').addClass('hidden');
     }
   });
 
