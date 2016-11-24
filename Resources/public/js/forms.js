@@ -55,25 +55,28 @@ $(document).ready(function () {
     minimumResultsForSearch: -1
   });
 
+  // Initialize file upload widget
   $(':file').on('fileselect', function(event, numFiles, label) {
-    $(this).parents('.input-group').find('.upload-current').addClass('hidden');
-    $(this).parents('.input-group').find('.upload-deleted').addClass('hidden');
-    $(this).parents('.input-group').find('.btn-file-delete').removeClass('active');
-    $(this).parents('.input-group').find('.btn-file-delete').find(':checkbox').prop('checked', false);
-    $(this).parents('.input-group').find('.upload-selected').html(label).removeClass('hidden');
+    var $parent = $(this).parents('.input-group');
+    $parent.find('.upload-current').addClass('hidden');
+    $parent.find('.upload-deleted').addClass('hidden');
+    $parent.find('.btn-file-delete').removeClass('active');
+    $parent.find('.btn-file-delete').find(':checkbox').prop('checked', false);
+    $parent.find('.upload-selected').html(label).removeClass('hidden');
   });
 
   $('.btn-file-delete').find(':checkbox').change(function() {
     var $this = $(this);
+    var $parent = $this.parents('.input-group');
     if ($this.is(':checked')) {
-      $(this).parents('.input-group').find('.upload-current').addClass('hidden');
-      $(this).parents('.input-group').find('.upload-deleted').removeClass('hidden');
-      $(this).parents('.input-group').find('.upload-selected').addClass('hidden');
-      $(this).parents('.input-group').find(':file').val('');
+      $parent.find('.upload-current').addClass('hidden');
+      $parent.find('.upload-deleted').removeClass('hidden');
+      $parent.find('.upload-selected').addClass('hidden');
+      $parent.find(':file').val('');
     } else {
-      $(this).parents('.input-group').find('.upload-current').removeClass('hidden');
-      $(this).parents('.input-group').find('.upload-deleted').addClass('hidden');
-      $(this).parents('.input-group').find('.upload-selected').addClass('hidden');
+      $parent.find('.upload-current').removeClass('hidden');
+      $parent.find('.upload-deleted').addClass('hidden');
+      $parent.find('.upload-selected').addClass('hidden');
     }
   });
 
