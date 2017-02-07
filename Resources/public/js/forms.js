@@ -50,9 +50,15 @@ $(document).ready(function () {
   });
 
   // Initialize select2 widgets
-  $('.select2').not('.select2-container').not('.select2-offscreen').select2({
-    width: 'resolve',
-    minimumResultsForSearch: -1
+  $('.select2').not('.select2-container').not('.select2-offscreen').each(function() {
+    var $this = $(this);
+    var $tags = $(this).hasClass('tags');
+    $this.select2({
+        tags:  $tags,
+        theme: 'bootstrap',
+        width: 'resolve',
+        minimumResultsForSearch: -1
+    });
   });
 
   // Initialize file upload widget
@@ -112,9 +118,15 @@ $(document).ready(function () {
       });
       $this.closest('.input-group').children('span.twitter-typeahead').css("display", "table-cell");
     });
-    $('.select2').not('.select2-container').not('.select2-offscreen').select2({
-      width: 'resolve',
-      minimumResultsForSearch: -1
+    $('.select2').not('.select2-container').not('.select2-offscreen').each(function() {
+      var $this = $(this);
+      var $tags = $(this).hasClass('tags');
+      $this.select2({
+        tags:  $tags,
+        theme: 'bootstrap',
+        width: 'resolve',
+        minimumResultsForSearch: -1
+      });
     });
   });
 });
